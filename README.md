@@ -2,7 +2,7 @@
 
 This repository is for CS 498 Data Visualization assignment - Narrative Visualization assignment, required from instructor to publish the result in public accessible place. 
 
-Also, this page will contain a few documentation includiong data source and others.
+Also, this page will contain a few documentation including data source and others, but the repo is not for sharing entire assignment source code. 
 
 ## Data Source
 
