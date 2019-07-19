@@ -6,10 +6,14 @@ Also, this page will contain a few documentation including data source and other
 
 ## Data Source
 
-Used World Bank APIs : 
+World Bank APIs : 
 
-https://datahelpdesk.worldbank.org/knowledgebase/topics/125589-developer-information
-https://datahelpdesk.worldbank.org/knowledgebase/articles/898581-api-basic-call-structures
+Developer Information: https://datahelpdesk.worldbank.org/knowledgebase/topics/125589-developer-information
+API Basic Call Structures: https://datahelpdesk.worldbank.org/knowledgebase/articles/898581-api-basic-call-structures
+Country API: https://datahelpdesk.worldbank.org/knowledgebase/articles/898590-country-api-queries
+Aggregate API query: https://datahelpdesk.worldbank.org/knowledgebase/articles/898614-aggregate-api-queries
+Metadata API query: https://datahelpdesk.worldbank.org/knowledgebase/articles/1886695-metadata-api-queries
+etc
 
 ## How to use World Bank APIs
 
