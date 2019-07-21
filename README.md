@@ -1,4 +1,4 @@
-# UIUC-CS498_DV_Narrative_Visualization
+# UIUC-CS498_DV_Narrative_Visualization(working in progress)
 
 This repository is for CS 498 Data Visualization assignment - Narrative Visualization assignment, required from instructor to publish the result in public accessible place. 
 
