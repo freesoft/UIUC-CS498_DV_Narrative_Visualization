@@ -2,11 +2,11 @@
     <head>
         <title>Narrative Visualization</title>
         <script src="https://d3js.org/d3.v5.min.js" charset="utf-8"></script>
-        <!-- <script src="https://code.jquery.com/jquery-latest.min.js"></script> -->
+        <script src="https://code.jquery.com/jquery-latest.min.js"></script>
         <!-- initial data load and all the javascript functions defined. -->
         <script src="load.js" charset="utf-8"></script>
 
-        <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <style>
             .line {
                 fill: none;
@@ -14,23 +14,54 @@
                 stroke-width: 2px;
             }
 
-            .ticks path {stroke:lightgray;opacity:0.3} 
+            .ticks path {stroke:darkgray;opacity:0.3} 
         </style>
     </head>
-<!-- load all country names and then draw USA data first -->
-<body onload="loadCountries(addCountriesList);draw('all');">
-    <div>
-            <p></p>
-            <button type="button">0</button>
-            <button type="button">1</button>
-            <button type="button">2</button>
-            <button type="button">3</button>
-            <button type="button">4</button>
+<!-- load all country names and then draw World data first -->
+<body onload="loadCountries(addCountriesList);draw('WLD', 0);">
+
+    <!-- Menu section -->
+    <div id="step1">
+        <div>
+            <p>This shows worldwide average wage and salaried workers, total(% of total employment)</p>
+            <p><div><a href="#" onclick="javascript:hide('#step1');show('#step2')">View next >>></a></div></p>
+        </div>
     </div>
 
+    <div id="step2" style="display:none">
+        <div>
+            <p>This shows worldwide average wage and salaried workers, male(% of total employment)</p>
+            <p><div><a href="#" onclick="javascript:hide('#step2');show('#step3')">View next >>></a></div></p>
+        </div>
+    </div>
+
+    <div id="step3" style="display:none">
+            <div>
+                <p>This shows worldwide average wage and salaried workers, female(% of total employment)</p>
+                <p><div><a href="#" onclick="javascript:hide('#step3');show('#step4')">View next >>></a></div></p>
+            </div>
+    </div>
+
+    <div id="step4" style="display:none">
+            <div>
+                <p>This shows specific country's average wage and salaried workers, including male, female, and total.(% of total employment)</p>
+                <p><div><a href="#" onclick="javascript:hide('#step4');show('#step1')"> View first </a></div></p>
+            </div>
+            <div>
+                <!-- TODO : it's bug and onclick doens't work. Fix it! -->
+                Total <input type="radio" name="type" value="0" checked onclick="draw('WLD', $('input[name=type]:checked'))">
+                Male <input type="radio" name="type" value="1" onclick="draw('WLD', $('input[name=type]:checked'))"/>
+                Female <input type="radio"name="type" value="2" onclick="draw('WLD', $('input[name=type]:checked'))"/>
+            </div>            
+    </div>
+
+    <!-- SVG shared by all scenes -->
     <svg></svg>
 
     <script>
+
+
+
 
         //loadCountries(debug);
         
