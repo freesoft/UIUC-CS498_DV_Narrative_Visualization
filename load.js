@@ -8,6 +8,12 @@ const margin = {top: 20, right: 20, bottom: 30, left: 50},
 
 var parseTime = d3.timeParse("%Y");
 
+// WDI call type 
+const type = {
+    TOTAL: 0,
+    MAILE: 1,
+    FEMAILE: 2
+}
 
 d3.select("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom);
 
@@ -38,8 +44,16 @@ function loadCountries(callback){
 }
 
 // get a given country's data
-// provide a callback function to execute with loaded data.
-function loadByCountryCode(countryCode, callback){
+// provide a callback function to execute with loaded data. World total.
+function loadTotalEmploymentByCountryCode(countryCode, callback){
+    d3.json("https://api.worldbank.org/v2/country/" + countryCode + "/indicator/SL.EMP.WORK.ZS?format=json&per_page=60&date=" + yearStart + ":" + yearEnd)
+        .then(callback);
+}
+function loadFemaleEmploymentByCountryCode(countryCode, callback){
+    d3.json("https://api.worldbank.org/v2/country/" + countryCode + "/indicator/SL.EMP.WORK.MA.ZS?format=json&per_page=60&date=" + yearStart + ":" + yearEnd)
+        .then(callback);
+}
+function loadMaleEmploymentByCountryCode(countryCode, callback){
     d3.json("https://api.worldbank.org/v2/country/" + countryCode + "/indicator/SL.EMP.WORK.FE.ZS?format=json&per_page=60&date=" + yearStart + ":" + yearEnd)
         .then(callback);
 }
@@ -49,58 +63,80 @@ function debug(d){
     console.log("DEBUG) data loaded:", d);
 }
 
-// draw charts with given country code
-function draw(countryCode) {
-
+/**
+ * callback function
+ * @param {*} countryCode country code to query, "WLD" is for the world.
+ * @param {*} type type constant
+ */
+function draw(countryCode, type) {
     console.log("country in draw():", countryCode);
-
-    loadByCountryCode(countryCode, function(data){
-
-        console.log("data[1] in draw():", data[1]);
-        if (data == null || data[1] == null){
-            alert("no data available");
-            return;
-        }
-
-        x.domain(d3.extent(data[1], function(d) { return parseTime(d.date); }));
-        y.domain(d3.extent(data[1], function(d) { return d.value; })); 
-
-        // Add the X Axis
-        console.log("height",height);
-        d3.select("svg").append("g").attr("transform", "translate(" + margin.left + "," + (height - margin.bottom) + ")").call(d3.axisBottom(x));
-
-        // Add the Y Axis
-        //d3.select("svg").select("g").call(d3.axisLeft(y)).call(g => g.select(".domain").remove());
-        d3.select("svg").append("g").attr("transform", "translate(" + margin.left + "," + (margin.top) + ")").call(d3.axisLeft(y));
-
-/*         d3.select("svg").attr("width", width).attr("height", height).append("g").attr("transform", "translate(0,0)")
-            .selectAll()
-            .data(data[1], function(d){return d.value}).enter()
-            .append("circle").attr("r", 10).attr("cx", function(d){return x(parseTime(d.date))}).attr("cy", function(d){return y(d.value)}).attr("fill", "red"); */
-
-        d3.select("svg").attr("width", width + margin.left + margin.right).attr("height",height + margin.top + margin.bottom)
-        .append("g")
-        .attr("width", width + margin.left + margin.right).attr("height",height + margin.top + margin.bottom)
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-        .attr("class", "line")
-        .attr("fill", "black")
-        .attr("stroke", "steelblue")
-        .attr("stroke-linejoin", "round")
-        .attr("stroke-linecap", "round")
-        .attr("stroke-width", 2)
-        .datum(data[1], function(d){return (d.date, d.value);})
-        .attr("d", valueline);
-        //.datum(data);
-        //.attr("d", data[1]);
-    });
+    if (type == 0){
+            loadTotalEmploymentByCountryCode(countryCode, drawChart);
+    }
+    else if (type == 1){
+        loadMaleEmploymentByCountryCode(countryCode, drawChart);
+    }
+    else if (type == 2){
+        loadFemaleEmploymentByCountryCode(countryCode, drawChart);
+    }
+    else {
+        console.log("error in draw()");
+    }
 
 }
 
+// callback function for d3.json()
+function drawChart(data){
+
+    console.log("data[1] in draw():", data[1]);
+    if (data == null || data[1] == null){
+        alert("no data available");
+        return;
+    }
+
+
+    //  clean up everything before drawing a new chart
+    d3.selectAll("svg > *").remove();
+
+    x.domain(d3.extent(data[1], function(d) { return parseTime(d.date); }));
+    y.domain([0, 100]);
+
+
+    // Add the X Axis
+    console.log("height",height);
+    d3.select("svg").append("g")
+        .attr("transform", "translate(" + margin.left + "," + (height - margin.bottom) + ")").call(d3.axisBottom(x));
+
+    // Add the Y Axis
+    //d3.select("svg").select("g").call(d3.axisLeft(y)).call(g => g.select(".domain").remove());
+    d3.select("svg").append("g").attr("transform", "translate(" + margin.left + "," + (margin.top) + ")").call(d3.axisLeft(y));
+
+    d3.select("svg").attr("width", width).attr("height", height)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + (margin.bottom + margin.bottom) + ")")
+        .selectAll()
+        .data(data[1], function(d){return d.value}).enter()
+        .append("circle").attr("r", function(d){return 2}).attr("cx", function(d){return x(parseTime(d.date))}).attr("cy", function(d){return y(d.value)}).attr("fill", "red");
+
+/*         d3.select("svg").attr("width", width + margin.left + margin.right).attr("height",height + margin.top + margin.bottom)
+    .append("g")
+    .attr("width", width + margin.left + margin.right).attr("height",height + margin.top + margin.bottom)
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+    .attr("class", "line")
+    .attr("fill", "black")
+    .attr("stroke", "steelblue")
+    .attr("stroke-linejoin", "round")
+    .attr("stroke-linecap", "round")
+    .attr("stroke-width", 2)
+    .datum(data[1], function(d){return d.value;})
+    .attr("d", valueline); */
+
+    //.datum(data);
+    //.attr("d", data[1]);
+};
 
 // callback function
 function addCountriesList(data, i){
-    //console.log("addCountriesList:" + data.toString());
-    //console.log("addCountriesList:page info:" + data[0].total);
 
     d3.select("body")
         .append("select")
@@ -116,6 +152,15 @@ function addCountriesList(data, i){
     d3.select("body").select("select").on("change", function(){
         //var countryCode = d3.select(this).property('value');
         console.log(d3.select(this).property('value'));
-        draw(d3.select(this).property('value'))
+        draw(d3.select(this).property('value'), d3.select('input[name=type]:checked').node().value);
     });
+}
+
+// utility functions
+function show(step){
+    $(step).show();
+}
+
+function hide(step){
+    $(step).hide();
 }
