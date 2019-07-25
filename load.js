@@ -24,7 +24,7 @@ valueline = d3.line()
                          .interpolate("linear"); */
 
 function load(){
-    d3.json("http://api.worldbank.org/v2/country/all/indicator/SL.EMP.WORK.ZS?format=json&per_page=60&date=" + yearStart + ":" + yearEnd).then(function(d){
+    d3.json("https://api.worldbank.org/v2/country/all/indicator/SL.EMP.WORK.ZS?format=json&per_page=60&date=" + yearStart + ":" + yearEnd).then(function(d){
         console.log(d);
     });
 }
@@ -34,13 +34,13 @@ function load(){
 function loadCountries(callback){
     if (typeof callback !== "function") throw new Error("Wrong callback in loadCountries");
 
-    d3.json("http://api.worldbank.org/v2/country?format=json&per_pages=" + totalNoOfCountriesToLoad).then(callback);
+    d3.json("https://api.worldbank.org/v2/country?format=json&per_pages=" + totalNoOfCountriesToLoad).then(callback);
 }
 
 // get a given country's data
 // provide a callback function to execute with loaded data.
 function loadByCountryCode(countryCode, callback){
-    d3.json("http://api.worldbank.org/v2/country/" + countryCode + "/indicator/SL.EMP.WORK.FE.ZS?format=json&per_page=60&date=" + yearStart + ":" + yearEnd)
+    d3.json("https://api.worldbank.org/v2/country/" + countryCode + "/indicator/SL.EMP.WORK.FE.ZS?format=json&per_page=60&date=" + yearStart + ":" + yearEnd)
         .then(callback);
 }
 
