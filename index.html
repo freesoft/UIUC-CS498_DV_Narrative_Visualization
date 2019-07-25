@@ -1,0 +1,167 @@
+<html>
+    <head>
+        <title>Narrative Visualization</title>
+        <script src="https://d3js.org/d3.v5.min.js" charset="utf-8"></script>
+        <!-- <script src="https://code.jquery.com/jquery-latest.min.js"></script> -->
+        <!-- initial data load and all the javascript functions defined. -->
+        <script src="load.js" charset="utf-8"></script>
+
+        <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
+        <style>
+            .line {
+                fill: none;
+                stroke: steelblue;
+                stroke-width: 2px;
+            }
+
+            .ticks path {stroke:lightgray;opacity:0.3} 
+        </style>
+    </head>
+<!-- load all country names and then draw USA data first -->
+<body onload="loadCountries(addCountriesList);draw('all');">
+    <div>
+            <p></p>
+            <button type="button">0</button>
+            <button type="button">1</button>
+            <button type="button">2</button>
+            <button type="button">3</button>
+            <button type="button">4</button>
+    </div>
+
+    <svg></svg>
+
+    <script>
+
+        //loadCountries(debug);
+        
+/* 
+        const svg_x = 600;
+        const svg_y = 600;
+        const plot_margin = 50;
+
+        const margin = {top: 20, right: 20, bottom: 30, left: 50},
+                        width = 960 - margin.left - margin.right,
+                        height = 500 - margin.top - margin.bottom;
+
+        var parseTime = d3.timeParse("%Y");
+
+        //d3.select("svg").append("rect").attr("width", "100").attr("height", 500).attr("fill", "red");
+        x = d3.scaleTime().domain([new Date(2000), new Date(2017)]).range([0,width]);
+        y = d3.scaleLinear().domain([0,100]).range([height,0]);
+
+        var valueline; */
+
+            
+/*             d3.json("http://api.worldbank.org/v2/indicator/SL.EMP.WORK.ZS?format=json"),
+            d3.json("http://api.worldbank.org/v2/country/usa/indicator/DPANUSSPB?date=2012M01:2017M12&format=json"),
+
+            // Wage and salaried workers, total (% of total employment) (modeled ILO estimate)
+            d3.json("http://api.worldbank.org/v2/country/KOR/indicator/SL.EMP.WORK.ZS?format=json&per_page=60&date=2000:2017"),
+
+            // Wage and salaried workers, male (% of total employment) (modeled ILO estimate)
+            d3.json("http://api.worldbank.org/v2/country/KOR/indicator/SL.EMP.WORK.MA.ZS?format=json&per_page=60&date=2000:2017"),
+
+
+            // Wage and salaried workers, female (% of total employment) (modeled ILO estimate)
+            d3.json("http://api.worldbank.org/v2/country/KOR/indicator/SL.EMP.WORK.FE.ZS?format=json&per_page=60&date=2000:2017"),
+
+            // get all countries ( total 304 countries so far so setting it to 400 items per page to get all the countries information. #TODO fix it so get page meta first to get "total" and send 2nd query to dynamically change the per_pages number to have "total" values)
+            d3.json("http://api.worldbank.org/v2/country?format=json&per_pages=400") */
+            
+            
+            //d3.csv("http://api.worldbank.org/v2/country/chn;bra/indicator/DPANUSSPB?date=2012M01:2017M12&format=json")
+
+
+                //console.log(data[0]) 
+                //console.log(data[1][1][0].country)
+
+                //console.log(data[2][1]);
+/* 
+                valueline = d3.line().x(function(d){ return x(d.date);});
+                console.log(valueline); */
+
+                //var valueline2 = d3.line().y(function(d){ return y(d.value);});
+/*                 .selectAll("circle#first").data(data[2][1]).enter()
+                .append("circle")
+                .attr("id", "first")
+                .attr("cx", function(d,i){return x(d.date);})
+                .attr("cy", function(d){return y(d.value);})
+                .attr("r",3)
+                .attr("fill", "gray"); */
+
+                  // Add the valueline path.
+/*                 d3.select("svg").append("path")
+                    .data([data[3][1]])
+                    .attr("class", "line")
+                    .attr("d", valueline);
+
+                d3.select("svg").append("g")
+                    .attr("transform", "translate(0," + height + ")")
+                    .call(d3.axisBottom(x));
+
+                // Add the Y Axis
+                d3.select("svg").append("g")
+                    .call(d3.axisLeft(y));
+
+
+                var svg = d3.select("body").append("svg")
+                                .attr("width", width + margin.left + margin.right)
+                                .attr("height", height + margin.top + margin.bottom)
+                            .append("g")
+                                .attr("transform",
+                                    "translate(" + margin.left + "," + margin.top + ")");
+
+                d3.select("body").append("select").attr("id", "country")
+                        .selectAll("options").data(data[5][1]).enter().append("option").attr("value", function(d){ return d.id; }).text(function (d){ return d.name;});
+
+                const pageInfo = data[0][0]; */
+
+/*                 // append x-axis
+                d3.select("svg")
+                .append("g")
+                .attr("transform", "translate(" + plot_margin + "," +  (svg_y - plot_margin) + ")")
+                .call( d3.axisBottom(x).tickValues([new Date(2000), new Date(2017)]).tickFormat(d3.format("~s")) );
+
+                // append y-axis
+                d3.select("svg")
+                .append("g")
+                .attr("transform", "translate(" + plot_margin + "," +  plot_margin + ")")
+                .call( d3.axisLeft(y).tickValues([20,40,60,80,100]).tickFormat(d3.format("~s")) ); */
+
+
+
+                //d3.select("body").append("div").attr("id", "pageInfo").text(JSON.stringify(pageInfo));
+                //d3.select("svg").append("text").attr("x", 0).attr("y", 100).text(JSON.stringify(pageInfo));
+                //d3.select("svg").append("text").attr("x", 0).attr("y", 100).text(JSON.stringify(pageInfo));
+                //.attr("dy", ".35em")
+
+
+            //console.log(data[1])
+
+
+        // get all countries ( total 304 countries so far so setting it to 400 items per page to get all the countries information. #TODO fix it so get page meta first to get "total" and send 2nd query to dynamically change the per_pages number to have "total" values)
+/*         d3.json("http://api.worldbank.org/v2/country?format=json&per_pages=400").then(
+            function(error, data){
+                //console.log(data);
+
+                d3.select("#country").on("change", function(){
+                    var newCountry = d3.select(this).property('value');
+                    //console.log(newCountry);
+                    d3.json("http://api.worldbank.org/v2/country/" + newCountry + "/indicator/SL.EMP.WORK.FE.ZS?format=json&per_page=60&date=2000:2017").then(function(d){
+                        console.log(d[1]);
+                        d3.select("svg").selectAll("circle").exit().remove();
+                        d3.select("svg").selectAll("circle").data(d[1]).enter()
+                            .attr("cx", function(d,i){return x(d.date); })
+                            .attr("cy", function(d){return y(d.value); })
+                            .attr("r",3)
+                            .attr("fill", "red");
+                    });
+                });
+            }
+        );
+
+        draw("USA"); */
+
+    </script>
+</body>
+</html>
