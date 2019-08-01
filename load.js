@@ -9,6 +9,8 @@ const margin = {top: 20, right: 20, bottom: 30, left: 50},
     height = svgHeight - margin.top - margin.bottom;
 
 var parseTime = d3.timeParse("%Y");
+var bisectDate = d3.bisector(function(d) { return d.date; }).left;
+var formatValue = d3.format(",");
 
 // WDI call type 
 const type = {
@@ -16,6 +18,8 @@ const type = {
     MAILE: 1,
     FEMAILE: 2
 }
+
+const colors = ["blue","red","yellow","green","black","blue","gray", "lightgray", "orange"];
 
 const chart = d3.select('#chart')
     .attr("width", svgWidth)
@@ -156,7 +160,56 @@ function drawChart(data){
     }
     ))
     .attr("class", "line")
-    .attr("d", valueline);
+    .attr("d", valueline)
+    .style("stroke", function(d, i) { 
+        return colors[Math.floor((Math.random()*6)+1)];
+     });
+
+     var focus = g.attr("class", "focus")
+                    .style("display", "none");
+
+    focus.append("rect")
+        .attr("class", "tooltip")
+        .attr("width", 100)
+        .attr("height", 50)
+        .attr("x", 10)
+        .attr("y", -22)
+        .attr("rx", 4)
+        .attr("ry", 4);
+
+    focus.append("text")
+        .attr("class", "tooltip-date")
+        .attr("x", 18)
+        .attr("y", -2);
+
+    focus.append("text")
+        .attr("x", 18)
+        .attr("y", 18)
+        .text("employment rate:");
+
+    focus.append("text")
+        .attr("class", "tooltip-employment-rate")
+        .attr("x", 60)
+        .attr("y", 18);           
+        
+    chart.append("rect")
+    .attr("class", "overlay")
+    .attr("width", width)
+    .attr("height", height)
+    .on("mouseover", function() { focus.style("display", null); })
+    .on("mouseout", function() { focus.style("display", "none"); })
+    .on("mousemove", mousemove);
+
+    function mousemove() {
+        var x0 = xScale.invert(d3.mouse(this)[0]),
+            i = bisectDate(data, x0, 1),
+            d0 = data[i - 1],
+            d1 = data[i],
+            d = x0 - d0.date > d1.date - x0 ? d1 : d0;
+        focus.attr("transform", "translate(" + xScale(parseTime(d.date)) + "," + yScale(formatValue(d.value)) + ")");
+        focus.select(".tooltip-date").text(d.date);
+        focus.select(".tooltip-employment-rate").text(d.value);
+    }
 
     // test if innerChart exists
     // innerChart.append("rect").attr("width", 100).attr("height", 100).attr("fill", "red");
@@ -179,7 +232,10 @@ function addCountriesList(data, i){
     d3.select("body").select("select").on("change", function(){
         //var countryCode = d3.select(this).property('value');
         console.log(d3.select(this).property('value'));
-        draw(d3.select(this).property('value'), d3.select('input[name=type]:checked').node().value);
+        draw(
+            d3.select(this).property('value'), 
+            d3.select('input[name=type]:checked').node().value
+        );
     });
 }
 

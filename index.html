@@ -2,23 +2,9 @@
     <head>
         <title>Narrative Visualization</title>
         <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-
+        <link href="d3.css" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <style>
-            .line {
-                fill: none;
-                stroke: steelblue;
-                stroke-width: 2px;
-            }
 
-            path { 
-                stroke: steelblue;
-                stroke-width: 2;
-                fill: none;
-            }
-
-            .ticks path {stroke:darkgray;opacity:0.3} 
-        </style>
     </head>
 <!-- load all country names and then draw World data first -->
 <body>
@@ -33,28 +19,29 @@
                 <br/>
                 Use select box if you want to nevigate each individual country's employment rates.
             </p>
-            <p><div><a href="#" onclick="javascript:hide('#step1');show('#step2')">View next >>></a></div></p>
+            <p><div><a href="#" onclick="hide('#step1');show('#step2')">View next >>></a></div></p>
         </div>
     </div>
 
     <div id="step2" style="display:none">
         <div>
             <p>This shows worldwide average wage and salaried workers, male(% of total employment)</p>
-            <p><div><a href="#" onclick="javascript:hide('#step2');show('#step3')">View next >>></a></div></p>
+            <p><div><a href="#" onclick="hide('#step2');show('#step3')">View next >>></a></div></p>
         </div>
     </div>
 
     <div id="step3" style="display:none">
             <div>
                 <p>This shows worldwide average wage and salaried workers, female(% of total employment)</p>
-                <p><div><a href="#" onclick="javascript:hide('#step3');show('#step4')">View next >>></a></div></p>
+                <p><div><a href="#" onclick="hide('#step3');show('#step4');loadCountries(addCountriesList);">View next >>></a></div></p>
             </div>
     </div>
 
     <div id="step4" style="display:none">
             <div>
                 <p>This shows specific country's average wage and salaried workers, including male, female, and total.(% of total employment)</p>
-                <p><div><a href="#" onclick="javascript:hide('#step4');show('#step1')"> View first </a></div></p>
+                <p>Use select box if you want to nevigate each individual country's employment rates.</p>
+                <p><div><a href="#" onclick="hide('#step4');show('#step1');"> View first </a></div></p>
             </div>
             <div>
                 <!-- TODO : it's bug and onclick doens't work. Fix it! -->
@@ -69,7 +56,7 @@
     <script src="https://d3js.org/d3.v5.min.js" charset="utf-8"></script>
     <script src="load.js" charset="utf-8"></script>
     <script>
-        loadCountries(addCountriesList);
+        //loadCountries(addCountriesList);
         draw('WLD', 0);
     </script>
 </body>
