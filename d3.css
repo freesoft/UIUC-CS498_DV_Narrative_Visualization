@@ -33,3 +33,9 @@ path {
 }
 
 .ticks path {stroke:darkgray;opacity:0.3} 
+
+.content {
+    max-width: 800px;
+    margin: auto;
+    background-color:lightgray;
+}

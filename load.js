@@ -63,6 +63,13 @@ var g = innerChart
                          .y(function(d) { return d.value; })
                          .interpolate("linear"); */
 
+$('.close').click(function() {
+    $('.alert').hide();
+})
+
+$('.alert').hide();
+
+
 function load(){
     d3.json("https://api.worldbank.org/v2/country/all/indicator/SL.EMP.WORK.ZS?format=json&per_page=60&date=" + yearStart + ":" + yearEnd).then(function(d){
         console.log(d);
@@ -124,7 +131,7 @@ function drawChart(data){
 
     console.log("data[1] in draw():", data[1]);
     if (data == null || data[1] == null){
-        alert("no data available");
+        $('.alert').show();
         return;
     }
 
