@@ -69,6 +69,12 @@ $('.close').click(function() {
 
 $('.alert').hide();
 
+$("#startover").click(function() {
+    hide("#step4");
+    hide("#country");
+    show("#step1");
+})
+
 
 function load(){
     d3.json("https://api.worldbank.org/v2/country/all/indicator/SL.EMP.WORK.ZS?format=json&per_page=60&date=" + yearStart + ":" + yearEnd).then(function(d){
