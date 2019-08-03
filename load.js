@@ -60,13 +60,19 @@ $('.alert').hide();
 $("#to_step2").click(function() {
     hide('#step1');
     show('#step2');
-    draw("WLD", 1);
+    d3.selectAll("path").remove();
+    draw("USA", 1);
+    draw("USA", 2);
+    draw("USA", 3);
 })
 
 $("#to_step3").click(function() {
     hide('#step2');
     show('#step3');
-    draw("WLD", 2);
+    d3.selectAll("path").remove();
+    draw("CHN", 1);
+    draw("CHN", 2);
+    draw("CHN", 3);
 })
 
 $("#to_step4").click(function() {
@@ -115,6 +121,21 @@ function loadMaleEmploymentByCountryCode(countryCode, callback){
         .then(callback);
 }
 
+function loadEmploymentByCountryCode(countryCode, type, callback){
+    if (type == "male"){
+        loadMaleEmploymentByCountryCode(countryCode, callback);
+    }
+    else if (type == "female"){
+        loadFemaleEmploymentByCountryCode(countryCode, callback);
+    }
+    else if (type == "total"){
+        loadTotalEmploymentByCountryCode(countryCode, callback);
+    }
+    else {
+        console.error("no proper type", type);
+    }
+}
+
 // Only for debugging purpose, provide this function as callback for those API calls to see the loaded data
 function debug(d){
     console.log("DEBUG) data loaded:", d);
@@ -128,13 +149,13 @@ function debug(d){
 function draw(countryCode, type) {
     console.log("country in draw():", countryCode);
     if (type == 0){
-        loadTotalEmploymentByCountryCode(countryCode, drawChart);
+        loadEmploymentByCountryCode(countryCode, "total", drawChart);
     }
     else if (type == 1){
-        loadMaleEmploymentByCountryCode(countryCode, drawChart);
+        loadEmploymentByCountryCode(countryCode, "male", drawChart);
     }
     else if (type == 2){
-        loadFemaleEmploymentByCountryCode(countryCode, drawChart);
+        loadEmploymentByCountryCode(countryCode, "female", drawChart);
     }
     else {
         console.log("error in draw(), type:", type);
@@ -169,7 +190,7 @@ function drawChart(data){
               "translate(" + (width/2) + " ," + 
                              (height + margin.top + 20) + ")")
         .style("text-anchor", "middle")
-        .text("Date");
+        .text("year");
 
     console.log("add y axis");
     // Add the Y Axis
@@ -190,6 +211,8 @@ function drawChart(data){
 
     console.log("draw data");
 
+    // value to store last line's x, y, and color so that it can be used for line's label text location and color
+    // to be shown up at the end of the line with same color.
     var lastXValueForLabel = 0;
     var lastYValueForLabel = 0;
     var lastLineColor = "black";
@@ -217,16 +240,12 @@ function drawChart(data){
     if (!d3.select("#country").empty()){
         innerChart.append("g").append("text")
         .attr("transform", "translate(" + width + "," + yScale(lastYValueForLabel) + ")")
-        //.attr("transform", "translate(" + xScale(width+3) + "," + yScale(d.value) + ")")
         .attr("dy", ".35em")
         .attr("text-anchor", "start")
         .style("fill", lastLineColor)
         .text(d3.select("#country option:checked").text());
     }
 
-
-    // test if innerChart exists
-    // innerChart.append("rect").attr("width", 100).attr("height", 100).attr("fill", "red");
 };
 
 // callback function
