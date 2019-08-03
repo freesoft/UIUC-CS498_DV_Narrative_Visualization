@@ -22,41 +22,41 @@
     <div class="container-fluid" id="step1">
         <div>
             <p>
-                <h1>Worldwide wage&amp;salary employment rate, total</h1>
+                <h1>1. Worldwide wage&amp;salary employment rate, total</h1>
                 This page shows worldwide average wage and salaried workers, % of total employment from 2000 to 2017.<br/>
                 Data used for plotting is coming from WDI(World Bank) in realtime by their APIs.<br/>
                 Some of the country have missing data, and in case you pick up the country you'll see nothing changes.<br/>
                 <br/>
                 Use select box if you want to nevigate each individual country's employment rates.
             </p>
-            <p><div><a href="#" onclick="hide('#step1');show('#step2')">View next >>></a></div></p>
+            <p><div id="to_step2"><a href="#">View next >>></a></div></p>
         </div>
     </div>
 
     <div id="step2" class="container-fluid" style="display:none">
         <div>
             <p>
-                <h1>Worldwide wage&amp;salary employment rate, male</h1>
+                <h1>2. Worldwide wage&amp;salary employment rate, male</h1>
                 This shows worldwide average wage and salaried workers, male(% of total employment)</br>
             </p>
-            <p><div><a href="#" onclick="hide('#step2');show('#step3')">View next >>></a></div></p>
+            <p><div id="to_step3"><a href="#">View next >>></a></div></p>
         </div>
     </div>
 
     <div id="step3" class="container-fluid" style="display:none">
         <div>
             <p>
-                <h1>Worldwide wage&amp;salary employment rate, female</h1>
+                <h1>3. Worldwide wage&amp;salary employment rate, female</h1>
                 This shows worldwide average wage and salaried workers, female(% of total employment)<br/>
             </p>
-            <p><div><a href="#" onclick="hide('#step3');show('#step4');loadCountries(addCountriesList);">View next >>></a></div></p>
+            <p><div id="to_step4"><a href="#">View next >>></a></div></p>
         </div>
     </div>
 
     <div id="step4" class="container-fluid" style="display:none">
         <div>
             <p>
-                <h1>Try yourself!</h1>
+                <h1>4. Try yourself!</h1>
                 This scene provides options to viewers so that viewers can navigate what they want to see. They can pick up specific country's average wage and salaried workers, including male, female, and total.(% of total employment)<br/>
                 Use select box if you want to nevigate each individual country's employment rates.<br/>
             </p>
@@ -64,9 +64,9 @@
         </div>
         <div>
             <!-- TODO : it's bug and onclick doens't work. Fix it! -->
-            Total <input type="radio" name="type" value="0" checked onclick="draw('WLD', $('input[name=type]:checked'))">
-            Male <input type="radio" name="type" value="1" onclick="draw('WLD', $('input[name=type]:checked'))"/>
-            Female <input type="radio"name="type" value="2" onclick="draw('WLD', $('input[name=type]:checked'))"/>
+            Total <input type="radio" name="type" value="0" checked/>
+            Male <input type="radio" name="type" value="1"/>
+            Female <input type="radio"name="type" value="2"/>
         </div>            
     </div>
     
