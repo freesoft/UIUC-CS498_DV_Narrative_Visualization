@@ -9,8 +9,8 @@ const margin = {top: 20, right: 120, bottom: 50, left: 50},
     height = svgHeight - margin.top - margin.bottom;
 
 var parseTime = d3.timeParse("%Y");
-var bisectDate = d3.bisector(function(d) { return d.date; }).left;
 var formatValue = d3.format(",");
+var floatFormatValue = d3.format(".3n");
 
 // WDI call type 
 const type = {
@@ -50,7 +50,7 @@ var g = innerChart
     .attr("height", svgHeight)
     .append("g")
     .attr("transform", `translate(${margin.left},${margin.top})`);    
-    
+
 $('.close').click(function() {
     $('.alert').hide();
 })
@@ -61,28 +61,43 @@ $("#to_step2").click(function() {
     hide('#step1');
     show('#step2');
     d3.selectAll("path").remove();
+    draw("USA", 0);
     draw("USA", 1);
     draw("USA", 2);
-    draw("USA", 3);
 })
 
 $("#to_step3").click(function() {
     hide('#step2');
     show('#step3');
     d3.selectAll("path").remove();
+    draw("CHN", 0);
     draw("CHN", 1);
     draw("CHN", 2);
-    draw("CHN", 3);
 })
 
 $("#to_step4").click(function() {
     hide('#step3');
     show('#step4');
+    d3.selectAll("path").remove();
+    draw("RUS", 0);
+    draw("RUS", 1);
+    draw("RUS", 2);
+})
+
+$("#to_step5").click(function() {
+    hide('#step4');
     loadCountries(addCountriesList);
+    show('#step5');
+    d3.selectAll("path").remove();
+    draw("WLD", 0);
+    draw("USA", 0);
+    draw("CHN", 0);
+    draw("RUS", 0);
+    
 })
 
 $("#startover").click(function() {
-    hide("#step4");
+    hide("#step5");
     hide("#country");
     show("#step1");
 })
@@ -121,6 +136,12 @@ function loadMaleEmploymentByCountryCode(countryCode, callback){
         .then(callback);
 }
 
+/**
+ * 
+ * @param {*} countryCode 3-digit country code
+ * @param {*} type "male", "female", "total" (male+female)
+ * @param {*} callback callback function 
+ */
 function loadEmploymentByCountryCode(countryCode, type, callback){
     if (type == "male"){
         loadMaleEmploymentByCountryCode(countryCode, callback);
@@ -149,13 +170,13 @@ function debug(d){
 function draw(countryCode, type) {
     console.log("country in draw():", countryCode);
     if (type == 0){
-        loadEmploymentByCountryCode(countryCode, "total", drawChart);
+        loadEmploymentByCountryCode(countryCode, "total", drawChart(countryCode, "orange"));
     }
     else if (type == 1){
-        loadEmploymentByCountryCode(countryCode, "male", drawChart);
+        loadEmploymentByCountryCode(countryCode, "male", drawChart(countryCode, "blue"));
     }
     else if (type == 2){
-        loadEmploymentByCountryCode(countryCode, "female", drawChart);
+        loadEmploymentByCountryCode(countryCode, "female", drawChart(countryCode, "red"));
     }
     else {
         console.log("error in draw(), type:", type);
@@ -163,97 +184,138 @@ function draw(countryCode, type) {
 
 }
 
-// callback function for d3.json()
-function drawChart(data){
+/**
+ * callback function for d3.json()
+ * @param {*} countryCode 3-digit country code to draw a linechart and also for label.
+ * @param {*} color color string to to draw line chart. e.g, "red", "black", etc.
+ */
+function drawChart(countryCode, color){
 
-    console.log("data[1] in draw():", data[1]);
-    if (data == null || data[1] == null){
-        $('.alert').show();
-        return;
-    }
+    console.log("Color parameter received in drawChart", color);
 
-    //  clean up everything before drawing a new chart
-    // d3.select("body").selectAll("svg > *").remove();
+    return function(data){
 
-    xScale.domain(d3.extent(data[1], function(d) { return d.date; }));
-    yScale.domain([0, 100]);
+        //console.log("data[0] in draw():", data[0]);
+        console.log("data[1] in draw():", data[1]);
+        if (data == null || data[1] == null){
+            $('.alert').show();
+            return;
+        }
 
-    // Add the X Axis
-    console.log("add x axis");
-    innerChart
-        .append('g')
-        .attr('transform', "translate(0," + height + ")")
-        .call(xAxis);
-    innerChart
-        .append("text")             
-        .attr("transform",
-              "translate(" + (width/2) + " ," + 
-                             (height + margin.top + 20) + ")")
-        .style("text-anchor", "middle")
-        .text("year");
+        //  clean up everything before drawing a new chart
+        // d3.select("body").selectAll("svg > *").remove();
 
-    console.log("add y axis");
-    // Add the Y Axis
-    innerChart
-        .append('g')
-        .call(yAxis)
-        .attr("y", 6);
+        xScale.domain(d3.extent(data[1], function(d) { return d.date; }));
+        yScale.domain([0, 100]);
 
-    innerChart
-        .append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 0 - margin.left)
-        .attr("x",0 - (height / 2))
-        .attr("dy", "1em")
-        .style("text-anchor", "middle")
-        .text("percentage");
+        // Add the X Axis
+        console.log("add x axis");
+        innerChart
+            .append('g')
+            .attr('transform', "translate(0," + height + ")")
+            .call(xAxis);
+
+        innerChart
+            .append("text")             
+            .attr("transform",
+                "translate(" + (width/2) + " ," + 
+                                (height + margin.top + 20) + ")")
+            .style("text-anchor", "middle")
+            .text("year");
+
+        console.log("add y axis");
+        // Add the Y Axis
+        innerChart
+            .append('g')
+            .call(yAxis)
+            .attr("y", 6);
+
+        innerChart
+            .append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0 - margin.left)
+            .attr("x",0 - (height / 2))
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .text("percentage");
 
 
-    console.log("draw data");
+        console.log("draw data");
 
-    // value to store last line's x, y, and color so that it can be used for line's label text location and color
-    // to be shown up at the end of the line with same color.
-    var lastXValueForLabel = 0;
-    var lastYValueForLabel = 0;
-    var lastLineColor = "black";
+        // value to store last line's x, y, and color so that it can be used for line's label text location and color
+        // to be shown up at the end of the line with same color.
+        var lastXValueForLabel = 0;
+        var lastYValueForLabel = 0;
+        var lastLineColor = "black";
 
-    innerChart.append("g").append("path").attr("width", width).attr("height",height)
-    .datum(data[1].map( (d, i) => {
-        console.log("path : date", d.date, "value", d.value);
-        lastXValueForLabel = d.date;
-        lastYValueForLabel = d.value;
-        return {
-            date : d.date,
-            value : d.value
+
+        /* Initialize tooltip */
+        tip = d3.tip().attr('class', 'd3-tip').offset([-5, 5]).html(function(d) { return "<strong style='color:" + color + "'>" + floatFormatValue(d[1].value)  + "</strong>"; });
+        /* Invoke the tip in the context of your visualization */
+        //innerChart.call(tip);
+
+        innerChart.append("g").append("path")
+        .attr("width", width).attr("height",height)
+        .datum(data[1].map( (d, i) => {
+            console.log("path : date", d.date, "value", d.value);
+            lastXValueForLabel = d.date;
+            lastYValueForLabel = d.value;
+            return {
+                date : d.date,
+                value : d.value
+            };
+        }
+        ))
+        .attr("class", "line")
+        .attr("d", valueline)
+        .style("stroke", color)
+        .call(tip)
+        .on('mouseover', tip.show)
+        .on('mouseout', tip.hide);
+
+
+        innerChart.append("g").selectAll(".dot")
+            .attr("width", width).attr("height",height)
+            .data(data[1].map( (d, i) => {
+                console.log("path : date", d.date, "value", d.value);
+                lastXValueForLabel = d.date;
+                lastYValueForLabel = d.value;
+                return {
+                    date : d.date,
+                    value : d.value
+                };
+            }
+            ))
+            .enter()
+            .append("circle") // Uses the enter().append() method
+            .attr("class", "dot") // Assign a class for styling
+            .attr("cx", function(d, i) { return xScale(i) })
+            .attr("cy", function(d) { return yScale(d.y) })
+            .attr("r", 5)
+            .on("mouseover", function(a, b, c) { 
+                console.log("mouseover", a); 
+            this.attr('class', 'focus')
+            })
+            .on("mouseout", function() {  });
+
+        if (!d3.select("#country").empty()){
+            innerChart.append("g").append("text")
+            .attr("transform", "translate(" + width + "," + yScale(lastYValueForLabel) + ")")
+            .attr("dy", ".20em")
+            .attr("text-anchor", "start")
+            .style("fill", color)
+            //.text(d3.select("#country option:checked").text());
+            .text(countryCode);
         };
     }
-    ))
-    .attr("class", "line")
-    .attr("d", valueline)
-    .style("stroke", function(d, i) { 
-        lastLineColor = colors[Math.floor((Math.random()*6)+1)];
-        return lastLineColor;
-     });
-
-    //console.log("select value", d3.select("#country option:checked").text());
-
-    if (!d3.select("#country").empty()){
-        innerChart.append("g").append("text")
-        .attr("transform", "translate(" + width + "," + yScale(lastYValueForLabel) + ")")
-        .attr("dy", ".35em")
-        .attr("text-anchor", "start")
-        .style("fill", lastLineColor)
-        .text(d3.select("#country option:checked").text());
-    }
-
-};
+}
 
 // callback function
 function addCountriesList(data, i){
 
     d3.select("body")
+        .select("#country_select_container")
         .append("select")
-        .attr("class", "selectpicker")  // Bootstrap thingy
         .attr("id", "country")
         .selectAll("options")
         .data(data[1])
@@ -262,7 +324,7 @@ function addCountriesList(data, i){
         .attr("value", function(d){ return d.id; })
         .text(function (d, i){return d.name;});
 
-    d3.select("body").select("select").on("change", function(){
+    d3.select("body").select("#country_select_container").select("select").on("change", function(){
         console.log(d3.select(this).property('value'));
         draw(
             d3.select(this).property('value'), 

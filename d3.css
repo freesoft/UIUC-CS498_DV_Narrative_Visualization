@@ -32,6 +32,11 @@ path {
     fill: none;
 }
 
+.dot {
+    fill: #ffab00;
+    stroke: #fff;
+}
+
 .ticks path {stroke:darkgray;opacity:0.3} 
 
 .content {
