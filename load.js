@@ -58,37 +58,41 @@ $('.close').click(function() {
 $('.alert').hide();
 
 $("#to_step2").click(function() {
+    //d3.selectAll("path").remove();
+    innerChart.selectAll("g").remove();
     hide('#step1');
-    show('#step2');
-    d3.selectAll("path").remove();
+    show('#step2');    
     draw("USA", 0);
     draw("USA", 1);
     draw("USA", 2);
 })
 
 $("#to_step3").click(function() {
+    //d3.selectAll("path").remove();
+    innerChart.selectAll("g").remove();
     hide('#step2');
     show('#step3');
-    d3.selectAll("path").remove();
     draw("CHN", 0);
     draw("CHN", 1);
     draw("CHN", 2);
 })
 
 $("#to_step4").click(function() {
+    //d3.selectAll("path").remove();
+    innerChart.selectAll("g").remove();
     hide('#step3');
     show('#step4');
-    d3.selectAll("path").remove();
     draw("RUS", 0);
     draw("RUS", 1);
     draw("RUS", 2);
 })
 
 $("#to_step5").click(function() {
+    //d3.selectAll("path").remove();
+    innerChart.selectAll("g").remove();
     hide('#step4');
     loadCountries(addCountriesList);
     show('#step5');
-    d3.selectAll("path").remove();
     draw("WLD", 0);
     draw("USA", 0);
     draw("CHN", 0);
@@ -97,9 +101,14 @@ $("#to_step5").click(function() {
 })
 
 $("#startover").click(function() {
+    innerChart.selectAll("g").remove();
     hide("#step5");
     hide("#country");
+    //d3.selectAll("path").remove();
     show("#step1");
+    draw("WLD", 0);
+    draw("WLD", 1);
+    draw("WLD", 2);
 })
 
 $("input[name='type']").click(function() {
@@ -193,6 +202,7 @@ function drawChart(countryCode, color){
 
     console.log("Color parameter received in drawChart", color);
 
+    // done this way to take extra parameter and pass it to the callback.
     return function(data){
 
         //console.log("data[0] in draw():", data[0]);
@@ -300,8 +310,8 @@ function drawChart(countryCode, color){
 
         if (!d3.select("#country").empty()){
             innerChart.append("g").append("text")
-            .attr("transform", "translate(" + width + "," + yScale(lastYValueForLabel) + ")")
-            .attr("dy", ".20em")
+            .attr("transform", "translate(" + (width - 20) + "," + yScale(lastYValueForLabel) + ")")
+            .attr("dy", ".15em")
             .attr("text-anchor", "start")
             .style("fill", color)
             //.text(d3.select("#country option:checked").text());
