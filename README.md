@@ -9,7 +9,7 @@ Github Page for demo: https://freesoft.github.io/UIUC-CS498_DV_Narrative_Visuali
 Git Repo: https://github.com/freesoft/UIUC-CS498_DV_Narrative_Visualization/
 ```
 
-Also, this page will contain a few documentation, including data source and others, but the repo is not for sharing entire assignment source code.  
+This doc contains a several sections, including `Review Criteria` by instructors, to explain the result of narrative visualization.
 
 ## Data Source
 
@@ -67,7 +67,7 @@ And you'll get the response as below;
 Which means that wage and salary workers' percentage in 2017 worldwide was 51.88%.
 
 
-# Review Criteria
+# Review Criteria ( copied from the instruction in Coursera )
 
 An essay will be required and will be submitted along with the URL of the narrative visualization. This essay is an important piece of the assignment as it is used for you to communicate your understanding of the concepts of narrative visualization and how they apply to the one you created.
 
@@ -97,7 +97,7 @@ However, while this wage&salaried worker's rate stays around 50%, some countries
 
 >Five scenes in the visualization use the same template. The top area of the template tells what data viewer see, followed by a detailed message that I asked myself and also wanted to show other viewers. 
 
->Plotting section (SVG) comes in middle of the page followed by line chart color information to explain the meaning of the each different color in line chart.
+>Plotting section (SVG) comes in the middle of the page, followed by line chart color information to explain the meaning of each different color in the line chart.
 
 >At the bottom, I added WDI indicator explanation section in 5 scenes so when a viewer can double-check the meaning of current WDI indicator without moving to the previous page or clicking the help button when they needed.
 
@@ -133,13 +133,14 @@ However, while this wage&salaried worker's rate stays around 50%, some countries
 
 >2) Radio box: gender radio box in scene 5 directly decide which parmater to use for data query.
 
->3) country select list: Depeonds on which country viewer choose in scene 5, it also impacts the behavior of WDI API call, and D3 code either calls world data or each individual country's data.
+>3) country select list: Depends on which country viewer choose in scene 5, it also impacts the behavior of WDI API call, and D3 code either calls world data or each country's data.
 
 # Why my visualization is different than others?
 
 My visualization is based on realtime WorldBank API calling and parse the JSON result. This behavior caused lots of data parsing and data sync issue but also taught me a lot more than I learned from the classes. e.g., how to pass extra function parameter to the callback function which usually takes only `d` or `d`,`i`. 
 Also, the visualization page will work well with updated data on WDI Worldbank data change as my code don't use locally loaded CSV.
 
-# What can be improved
+# Future work
 
-There is still some bug on the last page during overlapping the line chart. Also, internal chart drawing functions are flexible enough to take a query period(year) as a parameter, but I didn't have enough time to add it as query parameter, so the date is hardcoded from 2000 to 2017. Lastly, for whatever reason, World Bank WDI API only returns a first few country information up to China, although I am not sure if it's API side limitation or my D3 JSON fetch code bug, I'd like to fix this specific issue when I have extra time.
+* There is still some display issue on the last page during overlapping the line chart. 
+* Also, internal chart drawing functions are flexible enough to take a query period(year) as a parameter, but I didn't have enough time to add it as query parameter, so the date is hardcoded from 2000 to 2017. It would be better with some range/scroller to allow viewers to control of it.
