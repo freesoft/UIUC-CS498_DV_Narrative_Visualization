@@ -62,9 +62,9 @@ $("#to_step2").click(function() {
     innerChart.selectAll("g").remove();
     hide('#step1');
     show('#step2');    
-    draw("USA", 0);
-    draw("USA", 1);
-    draw("USA", 2);
+    draw("USA", false, 0);
+    draw("USA", false, 1);
+    draw("USA", false, 2);
 })
 
 $("#to_step3").click(function() {
@@ -72,9 +72,9 @@ $("#to_step3").click(function() {
     innerChart.selectAll("g").remove();
     hide('#step2');
     show('#step3');
-    draw("CHN", 0);
-    draw("CHN", 1);
-    draw("CHN", 2);
+    draw("CHN", false, 0);
+    draw("CHN", false, 1);
+    draw("CHN", false, 2);
 })
 
 $("#to_step4").click(function() {
@@ -82,9 +82,9 @@ $("#to_step4").click(function() {
     innerChart.selectAll("g").remove();
     hide('#step3');
     show('#step4');
-    draw("RUS", 0);
-    draw("RUS", 1);
-    draw("RUS", 2);
+    draw("RUS", false, 0);
+    draw("RUS", false, 1);
+    draw("RUS", false, 2);
 })
 
 $("#to_step5").click(function() {
@@ -93,10 +93,10 @@ $("#to_step5").click(function() {
     hide('#step4');
     loadCountries(addCountriesList);
     show('#step5');
-    draw("WLD", 0);
-    draw("USA", 0);
-    draw("CHN", 0);
-    draw("RUS", 0);
+    draw("WLD", true, 0);
+    draw("USA", true, 0);
+    draw("CHN", true, 0);
+    draw("RUS", true, 0);
     
 })
 
@@ -106,9 +106,9 @@ $("#startover").click(function() {
     hide("#country");
     //d3.selectAll("path").remove();
     show("#step1");
-    draw("WLD", 0);
-    draw("WLD", 1);
-    draw("WLD", 2);
+    draw("WLD", false, 0);
+    draw("WLD", false, 1);
+    draw("WLD", false, 2);
 })
 
 $("input[name='type']").click(function() {
@@ -174,31 +174,33 @@ function debug(d){
 /**
  * callback function
  * @param {*} countryCode 3-digit country code to query, "WLD" is for the world.
+ * @param {*} countrylabel true of false for drawing line tooltip 
  * @param {*} type type constant, 0: total, 1: male, 2: female
  */
-function draw(countryCode, type) {
+function draw(countryCode, countrylabel, type) {
     console.log("country in draw():", countryCode);
+
     if (type == 0){
-        loadEmploymentByCountryCode(countryCode, "total", drawChart(countryCode, "orange"));
+        loadEmploymentByCountryCode(countryCode, "total", drawChart(countryCode, countrylabel, "orange"));
     }
     else if (type == 1){
-        loadEmploymentByCountryCode(countryCode, "male", drawChart(countryCode, "blue"));
+        loadEmploymentByCountryCode(countryCode, "male", drawChart(countryCode, countrylabel, "blue"));
     }
     else if (type == 2){
-        loadEmploymentByCountryCode(countryCode, "female", drawChart(countryCode, "red"));
+        loadEmploymentByCountryCode(countryCode, "female", drawChart(countryCode, countrylabel, "red"));
     }
     else {
         console.log("error in draw(), type:", type);
     }
-
 }
 
 /**
  * callback function for d3.json()
  * @param {*} countryCode 3-digit country code to draw a linechart and also for label.
+ * @param {*} countrylabel true of false for drawing line tooltip 
  * @param {*} color color string to to draw line chart. e.g, "red", "black", etc.
  */
-function drawChart(countryCode, color){
+function drawChart(countryCode, countrylabel, color){
 
     console.log("Color parameter received in drawChart", color);
 
@@ -252,26 +254,15 @@ function drawChart(countryCode, color){
 
         console.log("draw data");
 
-        // value to store last line's x, y, and color so that it can be used for line's label text location and color
-        // to be shown up at the end of the line with same color.
-        var lastXValueForLabel = 0;
-        var lastYValueForLabel = 0;
-        var lastLineColor = "black";
-
-
-        /* Initialize tooltip */
-        tip = d3.tip().attr('class', 'd3-tip').offset([-5, 5]).html(function(d) { 
-            return "<strong style='color:" + color + "'>" + floatFormatValue(d.value)  + "</strong>"; 
-        });
-        /* Invoke the tip in the context of your visualization */
-        //innerChart.call(tip);
+        /* Initialize tooltip for datapoint */
+        tip = d3.tip().attr('class', 'd3-tip').offset([-5, 5]).html(function(d) {
+            return "<strong style='color:" + color + "'>" + countryCode + " " + floatFormatValue(d.value)  + "</strong>"; 
+        });   
 
         innerChart.append("g").append("path")
         .attr("width", width).attr("height",height)
         .datum(data[1].map( (d, i) => {
             console.log("path : date", d.date, "value", d.value);
-            lastXValueForLabel = d.date;
-            lastYValueForLabel = d.value;
             return {
                 date : d.date,
                 value : d.value
@@ -281,10 +272,8 @@ function drawChart(countryCode, color){
         .attr("class", "line")
         .attr("d", valueline)
         .style("stroke", color);
-//        .call(tip)
-//        .on('mouseover', tip.show)
-//        .on('mouseout', tip.hide);
 
+        // datapoint tooltip
         innerChart.append("g").selectAll(".dot")
             .attr("width", width).attr("height",height)
             .data(data[1])
@@ -298,15 +287,14 @@ function drawChart(countryCode, color){
             .on('mouseover', tip.show)
             .on('mouseout', tip.hide);
 
-        if (!d3.select("#country").empty()){
-            innerChart.append("g").append("text")
-            .attr("transform", "translate(" + (width - 20) + "," + yScale(lastYValueForLabel) + ")")
+        if (countrylabel == true){
+            innerChart.selectAll().data(data[1]).enter().append("g").append("text")
+            .attr("transform", "translate(" + (width - 20) + "," + yScale(data[1][data[1].length - 1].value) + ")")
             .attr("dy", ".15em")
             .attr("text-anchor", "start")
             .style("fill", color)
-            //.text(d3.select("#country option:checked").text());
             .text(countryCode);
-        };
+        }
     }
 }
 
@@ -328,6 +316,7 @@ function addCountriesList(data, i){
         console.log(d3.select(this).property('value'));
         draw(
             d3.select(this).property('value'), 
+            true,
             d3.select('input[name=type]:checked').node().value
         );
     });
