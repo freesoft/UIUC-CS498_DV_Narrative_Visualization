@@ -244,7 +244,7 @@ function drawChart(countryCode, color){
             .append("text")
             .attr("transform", "rotate(-90)")
             .attr("y", 0 - margin.left)
-            .attr("x",0 - (height / 2))
+            .attr("x", 0 - (height / 2))
             .attr("dy", "1em")
             .style("text-anchor", "middle")
             .text("percentage");
@@ -260,7 +260,9 @@ function drawChart(countryCode, color){
 
 
         /* Initialize tooltip */
-        tip = d3.tip().attr('class', 'd3-tip').offset([-5, 5]).html(function(d) { return "<strong style='color:" + color + "'>" + floatFormatValue(d[1].value)  + "</strong>"; });
+        tip = d3.tip().attr('class', 'd3-tip').offset([-5, 5]).html(function(d) { 
+            return "<strong style='color:" + color + "'>" + floatFormatValue(d.value)  + "</strong>"; 
+        });
         /* Invoke the tip in the context of your visualization */
         //innerChart.call(tip);
 
@@ -278,35 +280,23 @@ function drawChart(countryCode, color){
         ))
         .attr("class", "line")
         .attr("d", valueline)
-        .style("stroke", color)
-        .call(tip)
-        .on('mouseover', tip.show)
-        .on('mouseout', tip.hide);
-
+        .style("stroke", color);
+//        .call(tip)
+//        .on('mouseover', tip.show)
+//        .on('mouseout', tip.hide);
 
         innerChart.append("g").selectAll(".dot")
             .attr("width", width).attr("height",height)
-            .data(data[1].map( (d, i) => {
-                console.log("path : date", d.date, "value", d.value);
-                lastXValueForLabel = d.date;
-                lastYValueForLabel = d.value;
-                return {
-                    date : d.date,
-                    value : d.value
-                };
-            }
-            ))
+            .data(data[1])
             .enter()
             .append("circle") // Uses the enter().append() method
             .attr("class", "dot") // Assign a class for styling
-            .attr("cx", function(d, i) { return xScale(i) })
-            .attr("cy", function(d) { return yScale(d.y) })
-            .attr("r", 5)
-            .on("mouseover", function(a, b, c) { 
-                console.log("mouseover", a); 
-            this.attr('class', 'focus')
-            })
-            .on("mouseout", function() {  });
+            .attr("cx", function(d) { return xScale(d.date) })
+            .attr("cy", function(d) { return yScale(d.value) })
+            .attr("r", 3)
+            .call(tip)
+            .on('mouseover', tip.show)
+            .on('mouseout', tip.hide);
 
         if (!d3.select("#country").empty()){
             innerChart.append("g").append("text")

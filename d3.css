@@ -4,6 +4,7 @@
 }
 
 .focus circle {
+    fill: none;
     fill: steelblue;
 }
 
@@ -33,7 +34,7 @@ path {
 }
 
 .dot {
-    fill: #ffab00;
+    fill: #000000;
     stroke: #fff;
 }
 
