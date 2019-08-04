@@ -5,8 +5,8 @@ Wonhee Jung (wonheej2@illinois.edu) - University of Illinois at Urbana-Champaign
 This repository is for University of Illinois at Urbana-Champaign MCS-DS CS 498 Data Visualization summer 2019 assignment - Narrative Visualization, and published to Github Page per instructor's request.
 
 ```
-Git Repo : https://github.com/freesoft/UIUC-CS498_DV_Narrative_Visualization/
-Github Page : https://freesoft.github.io/UIUC-CS498_DV_Narrative_Visualization/
+Github Page for demo: https://freesoft.github.io/UIUC-CS498_DV_Narrative_Visualization/
+Git Repo: https://github.com/freesoft/UIUC-CS498_DV_Narrative_Visualization/
 ```
 
 Also, this page will contain a few documentation including data source and others, but the repo is not for sharing entire assignment source code. 
@@ -78,10 +78,10 @@ The essay should contain the following sections.
 * <b>Messaging.</b> What is the message you are trying to communicate with the narrative visualization?
 
 ```
-labor force -> didn't change much 39.46 -> 39.037 %
-wage and salary worker % -> increased 44.8% -> 52.4%
-population -> increased 3.0 billion -> 3.72 billion
-
+This visualization assignment asks why the rate of waged & salaried worker is so different 
+between countries. 
+I've found this oddness while I was working on previous Tableau Dashboard assignment, and decided to 
+make a story for this to question to myself and also for the viewers. 
 ```
 
 * <b>Narrative Structure.</b> Which structure was your narrative visualization designed to follow (martini glass, interactive slide show or drop-down story)? How does your narrative visualization follow that structure? (All of these structures can include the opportunity to "drill-down" and explore. The difference is where that opportunity happens in the structure.)
@@ -121,3 +121,12 @@ At the very last scene, I've added the link to the first page so that viewer can
 ```
 I've added a tooltip on top of the line chart.
 ```
+
+# Why my visualization is different than others?
+
+Unlike other example code from many D3 V5 examples you can find on github or web serarch, my visualziation is based on realtime WorldBank API calling and parse the JSON result. This caused lots of data parsing and data sync issue, but also taught me a lot more than I learned from the classes. e.g, how to pass extra function parameter to the callback function which usually take only `d` or `d`,`i`. 
+Also, this visualization page will be working with latest data if there is an update on WDI Worldbank side since this code doesn't use pre-processed local CSV. 
+
+# What can be improved
+
+There is still some bug on last page during overlapping the line chart. Also, internal chart drawing functions are flexible enough to take a query period(year) as parameter, but I didn't have enough time to add it as query parameter so the date is hardcoded from 2000 to 2017. 
