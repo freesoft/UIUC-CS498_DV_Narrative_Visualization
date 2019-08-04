@@ -194,6 +194,7 @@ function draw(countryCode, countrylabel, type) {
     }
 }
 
+
 /**
  * callback function for d3.json()
  * @param {*} countryCode 3-digit country code to draw a linechart and also for label.
@@ -259,7 +260,7 @@ function drawChart(countryCode, countrylabel, color){
             return "<strong style='color:" + color + "'>" + countryCode + " " + floatFormatValue(d.value)  + "</strong>"; 
         });   
 
-        innerChart.append("g").append("path")
+        var path = innerChart.append("g").append("path")
         .attr("width", width).attr("height",height)
         .datum(data[1].map( (d, i) => {
             console.log("path : date", d.date, "value", d.value);
@@ -271,7 +272,7 @@ function drawChart(countryCode, countrylabel, color){
         ))
         .attr("class", "line")
         .attr("d", valueline)
-        .style("stroke", color);
+        .style("stroke", color);        
 
         // datapoint tooltip
         innerChart.append("g").selectAll(".dot")
