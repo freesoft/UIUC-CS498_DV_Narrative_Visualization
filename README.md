@@ -87,9 +87,9 @@ However, while this wage&salaried worker's rate stays around 50%, some countries
 
 > So I wanted to share what I found previously, and make it a narrative story so that viewers can have time to think, and hope to see other evidence and data to answer these differences. Also, I gave a feature to investigate other country's WDI data for employment rate.
 
-* <b>Narrative Structure.</b> Which structure was your narrative visualization designed to follow (martini glass, interactive slide show or drop-down story)? How does your narrative visualization follow that structure? (All of these structures can include the opportunity to "drill-down" and explore. The difference is where that opportunity happens in the structure.)
+* <b>Narrative Structure.</b> Which structure was your narrative visualization designed to follow (Martini glass, interactive slide show or drop-down story)? How does your narrative visualization follow that structure? (All of these structures can include the opportunity to "drill-down" and explore. The difference is where that opportunity happens in the structure.)
 
->'ve used Martini Glass structure. I added four scenes to show the different country's line chart, including world average, and then attached the last scene in the visualization with a few controllable options that viewer can navigate different country's data, including data type, e.g., male, female, or total ratio.
+>I've used Martini Glass structure. I added four scenes to show the different country's line chart, including world average, and then attached the last scene in the visualization with a few controllable options that viewer can navigate different country's data, including data type, e.g., male, female, or total ratio.
 
 * <b>Visual Structure.</b> What visual structure is used for each scene? How does it ensure the viewer can understand the data and navigate the scene? How does it highlight to urge the viewer to focus on the important parts of the data in each scene? How does it help the viewer transition to other scenes, to understand how the data connects to the data in other scenes?
 
